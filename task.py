@@ -1,14 +1,19 @@
 from pathlib import Path
 from typing import Collection
 from stable_map import StableMap
-from stable_map.handlers import LoggingHandler
+from stable_map.context import ErrorContext, ExceptionType, T
+from stable_map.handler import ErrorHandler
 
 
 class InvalidFileStructure(RuntimeError):
     """The structure of the file is invalid"""
-    def __init__(self, file: Path) -> None:
-        super().__init__(file)
-        file.with_name(f"!_invalid_{file.stem}")
+
+    ...
+
+
+class InvalidFileStructureHandler(ErrorHandler[Path, ExceptionType]):
+    def handle(self, context: ErrorContext[Path, ExceptionType]) -> None:
+        context.element.with_name(f"!_invalid_{context.element.stem}")
 
 
 def read_file(
