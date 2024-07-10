@@ -40,8 +40,11 @@ def read_file(
 def main() -> None:
     user_input = input("Введите путь к директории с файлами: ")
     source_dir = Path(user_input).expanduser().resolve()
-
-    ...
+    stable_map = StableMap(read_file, source_dir.iterdir(), [
+        EOFErrorHandler(exceptions=[EOFError]),
+        InvalidFileStructureHandler(exceptions=[InvalidFileStructure]),
+    ])
+    print(list(stable_map))
 
 
 if __name__ == "__main__":
