@@ -16,6 +16,11 @@ class InvalidFileStructureHandler(ErrorHandler[Path, ExceptionType]):
         context.element.with_name(f"!_invalid_{context.element.stem}")
 
 
+class EOFErrorHandler(ErrorHandler[Path, ExceptionType]):
+    def handle(self, context: ErrorContext[Path, ExceptionType]) -> None:
+        print(context.element.name)
+
+
 def read_file(
     file: Path,
     encoding: str = "utf-8",
