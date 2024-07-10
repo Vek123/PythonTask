@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import Collection
 from stable_map import StableMap
@@ -13,7 +14,7 @@ class InvalidFileStructure(RuntimeError):
 
 class InvalidFileStructureHandler(ErrorHandler[Path, ExceptionType]):
     def handle(self, context: ErrorContext[Path, ExceptionType]) -> None:
-        context.element.with_name(f"!_invalid_{context.element.stem}")
+        os.rename(context.element.resolve(), context.element.with_stem(f"!_invalid_{context.element.stem}"))
 
 
 class EOFErrorHandler(ErrorHandler[Path, ExceptionType]):
